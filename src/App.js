@@ -1,14 +1,21 @@
 import React from 'react';
 import './App.css';
 import TodoList from './TodoList/todoList';
-import TodoItem from './TodoItem/todoItem';
+import AddTodo from './AddTodo/addTodo';
 
 class App extends React.Component{
+
+  constructor(){
+    super();
+    this.state = {
+      todos:[]
+    };
+  }
   render(){
     return(
-      <div>
-        <TodoList></TodoList>
-        <TodoItem></TodoItem>
+      <div className = "App">
+        <AddTodo addTodoFn={this.addTodo}></AddTodo>
+        <TodoList updateTodoFn={this.updateTodo} todos={this.state.todos}></TodoList>
       </div>
     
     );
@@ -17,12 +24,36 @@ class App extends React.Component{
   componentDidMount = () => {
     const todos = localStorage.getItem('todos');
     if(todos){
-      console.log('Has todos', todos);
+      const savedTodos = JSON.parse(todos); // todos saved in local database have to be string, to retrieve the data we can use JSON parse
+      this.setState({ todos: savedTodos });
     } else {
       console.log('No todos');
     }
   }
 
+  //addTodo = (todo) => console.log(todo); //what we already have in todos = spread operator
+  addTodo = async (todo) => {
+    await this.setState({todos: [...this.state.todos, {
+      text: todo,
+      completed: false
+    }] });
+    localStorage.setItem('todos',JSON.stringify(this.state.todos));
+    console.log(localStorage.getItem('todos'));
+  }
+
+  updateTodo = async(todo) =>{
+    const newTodos = this.state.todos.map(_todo => {
+      if(todo === _todo)
+      return{
+        text: todo.text,
+        completed: !todo.completed
+      }
+      else
+        return _todo
+    });
+    await this.setState({todos: newTodos});
+    localStorage.setItem('todos', JSON.stringify(this.state.todos));
+  }
 }
 
 export default App;
