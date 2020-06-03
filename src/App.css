@@ -4,7 +4,13 @@ body {
     font-size: 20px;
 }
 
-.App{
+.title{
+    padding-top: 20px;
+    padding-left: 220px;
+    font-size: 30px;
+}
+
+.app{
     background-color: thistle;
     min-height: 800px;
     width: 600px;
@@ -25,7 +31,6 @@ body {
   #todoForm input{
     font-size: 20px;
     width: 350px;
-    margin-top: 50px;
     border-radius: 5px;
   }
 
@@ -65,3 +70,5 @@ body {
     padding: 10px;
 
   }
+
+  
